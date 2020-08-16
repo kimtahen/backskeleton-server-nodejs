@@ -5,7 +5,10 @@ import helmet from 'helmet';
 import * as hpp from 'hpp';
 import * as mongoose from 'mongoose';
 import * as logger from 'morgan';
+const session = require('express-session');
+
 import Routes from './interfaces/routes.interface';
+const passport = require('./libs/passport');
 import errorMiddleware from './middlewares/error.middleware';
 
 class App {
@@ -43,9 +46,12 @@ class App {
       this.app.use(logger('dev'));
       this.app.use(cors({origin: true, credentials: true}));
     }
+    this.app.use(session({ secret: 'ohou' }));
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
+    this.app.use(passport.initialize());
+    this.app.use(passport.session());
   }
 
   private initializeRoutes(routes: Routes[]) {
@@ -62,7 +68,7 @@ class App {
     const { MONGO_USER, MONGO_PASSWORD, MONGO_PATH, MONGO_DATABASE } = process.env;
     const options = { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false };
 
-    mongoose.connect(`mongodb://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}/${MONGO_DATABASE}?authSource=admin`, { ...options })
+    mongoose.connect(`mongodb://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}/${MONGO_DATABASE}?authSource=admin`, { ...options });
   }
 }
 

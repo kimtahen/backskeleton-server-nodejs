@@ -1,0 +1,29 @@
+import { NextFunction, Request, Response } from 'express';
+import {LoginDto} from '../dtos/login.dto';
+
+
+const passport = require('../libs/passport')
+
+export class LoginController {
+  public login = (req: Request, res: Response, next: NextFunction) => {
+    passport.authenticate('local', (err: any, user: string, info: any) => {
+      if (err) { return next(err); }
+      if(!user){
+        return res.status(401).json({message: `unauthorized`, payload: info});
+      }
+      req.login(user, (erro: any) => {
+        if (erro) { return next(erro); }
+        return res.status(200).json({data: user, message: `authorized`});
+      });
+    })(req,res,next);
+  }
+
+  public loginPage = (req: Request, res: Response, next: NextFunction) => {
+    res.sendFile(`D:\\workspace\\reactStudy\\react-study-back\\src\\static\\login.html`);
+  }
+
+  public logout = (req: Request,res: Response) => {
+    req.logout();
+    res.status(200).json({message: 'logout success'});
+  }
+}

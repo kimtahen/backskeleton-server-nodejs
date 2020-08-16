@@ -11,9 +11,17 @@
     "import-name": false,
     "no-console": false,
     "object-literal-sort-keys": false,
-    "disable-next-line": ["align", "no-trailing-whitespace"],
     "max-classes-per-file": true,
-    "no-parameter-reassignment": false
+    "no-parameter-reassignment": false,
+
+    //"disable-next-line": ["align", "no-trailing-whitespace"],
+    "no-trailing-whitespace": false,
+    "object-curly-spacing": false,
+    "align": false,
+    "whitespace": false,
+    "quotemark": false,
+    "no-var-requires": false,
+    "variable-name": false
   },
   "rulesDirectory": []
 }
