@@ -27,7 +27,8 @@ export class UserService {
     const alreadyExistUser: IUser = await this.users.findOne({ email: data.email });
     if (alreadyExistUser) throw new HttpException(409, `${data.email}은 이미 등록된 이메일입니다.`);
 
-    const hashedPassword: string = await this.cryptor.encrypt(data.password);
+    const hashedPassword: string = data.password;
+      // await this.cryptor.encrypt(data.password);
     const newUser: IUser = await this.users.createUser(data.email, data.name, hashedPassword);
     return newUser;
   }

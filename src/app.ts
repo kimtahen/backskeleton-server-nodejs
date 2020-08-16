@@ -37,14 +37,12 @@ class App {
   private initializeMiddlewares() {
     if (this.env) {
       this.app.use(hpp());
-      this.app.use(helmet());
       this.app.use(logger('combined'));
       this.app.use(cors({ origin: 'your.domain.com', credentials: true }));
     } else {
       this.app.use(logger('dev'));
-      this.app.use(cors({ origin: true, credentials: true }));
+      this.app.use(cors({origin: true, credentials: true}));
     }
-
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
@@ -64,7 +62,7 @@ class App {
     const { MONGO_USER, MONGO_PASSWORD, MONGO_PATH, MONGO_DATABASE } = process.env;
     const options = { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false };
 
-    mongoose.connect(`mongodb://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}/${MONGO_DATABASE}?authSource=admin`, { ...options });
+    mongoose.connect(`mongodb://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}/${MONGO_DATABASE}?authSource=admin`, { ...options })
   }
 }
 
