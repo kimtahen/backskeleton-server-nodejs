@@ -1,6 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-
+import {Cryptor} from '../libs/cryptor';
+const cryptor = new Cryptor();
 import {Users} from '../models/user.model';
 import {IUser} from '../interfaces/user.interface';
 import {stringify} from 'querystring';
@@ -10,13 +11,12 @@ passport.use(new LocalStrategy({
   passwordField: 'pw',
 }, async (username: string, password: string, done: any): Promise<IUser> => {
   const user: IUser = await Users.findOne({email: username});
-  if (!user) {
-    return done(null, false, {message: `User doesn't exist`});
+  const encryptedPassword = await cryptor.encrypt(password);
+  if (!user || user.password !== encryptedPassword) {
+    return done(null, false, {message: `check your id & pw`});
   }
-  if (user.password !== password ){
-    return done(null, false, {message: `Password is wrong`});
-  }
-  return done(null, user);
+  user.password = undefined;
+  return done(null, user, {message: `login success`});
 }));
 
 passport.serializeUser((user: IUser, done: any) => {
@@ -30,6 +30,7 @@ passport.deserializeUser(async (user_email: any, done: any) => {
   if (!user) {
     err = {message: "user doesn't exist"};
   }
+  user.password = undefined;
   done(err, user);
 });
 

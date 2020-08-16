@@ -9,5 +9,7 @@ export class Cryptor {
     return crypto.createHmac(this.ALGORITHM, this.HASING_KEY).update(payload).digest('base64');
   }
 
-  public async decrypt() {}
+  public async decrypt() {
+
+  }
 }

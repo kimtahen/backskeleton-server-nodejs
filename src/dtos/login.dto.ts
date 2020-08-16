@@ -1,7 +1,8 @@
-import {IsString} from 'class-validator';
+import {IsString,IsEmail} from 'class-validator';
 
 export class LoginDto{
-  @IsString()
+  @IsEmail()
   public id: string;
+  @IsString()
   public pw: string;
 }

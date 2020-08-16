@@ -19,6 +19,7 @@ export class LoginRoute implements Route{
     this.router.post(`${this.path}`, validation(LoginDto), this.controller.login);
     this.router.get(`${this.path}`, this.controller.loginPage);
     this.router.get(`/logout`,this.controller.logout);
+    this.router.get(`${this.path}/info`,this.controller.loginInfo);
   }
 
 }
