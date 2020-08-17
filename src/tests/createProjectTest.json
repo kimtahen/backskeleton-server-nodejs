@@ -1,0 +1,11 @@
+{
+  "title": "b",
+  "additionalInfo": {
+    "spaceType": "1",
+    "roomSize": "2",
+    "workType": "1",
+    "category": "4",
+    "familyType": "3"
+  },
+  "data": "helloworld"
+}

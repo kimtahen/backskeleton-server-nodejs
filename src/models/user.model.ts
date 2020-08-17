@@ -3,7 +3,7 @@ import { IUser } from '../interfaces/user.interface';
 import { Cryptor } from '../libs/cryptor';
 
 export interface User extends IUser {
-  /* instance methods */
+
 }
 
 export interface UserModel extends Model<User> {

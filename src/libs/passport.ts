@@ -25,7 +25,7 @@ passport.serializeUser((user: IUser, done: any) => {
 
 passport.deserializeUser(async (user_email: any, done: any) => {
   console.log('deserialize user : ',user_email);
-  const user: IUser = await Users.findOne({email: user_email});
+  const user: IUser = await Users.findOne({email: user_email})
   let err;
   if (!user) {
     err = {message: "user doesn't exist"};

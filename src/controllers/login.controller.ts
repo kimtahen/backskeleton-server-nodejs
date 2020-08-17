@@ -17,15 +17,18 @@ export class LoginController {
   }
 
   public loginPage = (req: Request, res: Response, next: NextFunction) => {
-    res.sendFile(`D:\\workspace\\reactStudy\\react-study-back\\src\\static\\login.html`);
+    if(req.user){
+      return res.redirect('/login/info');
+    }
+    return res.sendFile(`D:\\workspace\\reactStudy\\react-study-back\\src\\static\\login.html`);
   }
 
   public loginInfo = (req: Request, res: Response, next: NextFunction) => {
-    res.json({'req.user': req.user, 'req.session': req.session});
+    return res.json({'req.user': req.user, 'req.session': req.session});
   }
 
   public logout = (req: Request,res: Response) => {
     req.logout();
-    res.status(200).json({message: 'logout success'});
+    return res.status(200).json({message: 'logout success'});
   }
 }

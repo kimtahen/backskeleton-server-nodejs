@@ -1,11 +1,9 @@
 import { Document } from 'mongoose';
 
 export interface Iproject extends Document{
-  projectID: number;
-  email: string;
   title: string;
-  date: string;
-  like: number;
+  date?: string;
+  like?: number;
   additionalInfo: DetailedInformation;
   data: string;
 }
@@ -15,16 +13,16 @@ export interface DetailedInformation {
   workType: number;
   category: number;
   familyType: number;
-  region: string;
-  style: string;
-  period: string;
-  budget: number;
-  entireTone: string;
-  wallColor: string;
-  floorColor: string;
-  details: string;
-  link: string;
-  copyright: string;
+  region?: string;
+  style?: string;
+  period?: string;
+  budget?: number;
+  entireTone?: string;
+  wallColor?: string;
+  floorColor?: string;
+  details?: string;
+  link?: string;
+  copyright?: string;
 }
 
 const spaceType : object = {
