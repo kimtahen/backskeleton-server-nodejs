@@ -23,6 +23,12 @@
   - 아래 Entity처럼 Photo라는 게시글이 있고, 그 글의 작성자가 특정 유저인 경우,
   - Photo: { title: "blah", content: "something", userId: "5ee8c5d738d4dc5431ced49a" }와 같이 들어갈 수 있어요.
   - 이때 이 문서를 꺼내는 방식에 따라 _id만 표시할지, 아래에 있는 Document를 그대로 가져올 지 선택할 수 있어요.
+- 필드가 exampleField: [{ type: String }] 와 같이 []로 감싸진 경우, 해당 필드는 Array 타입이라고 생각하시면 됩니다!
+  - example
+  ```Javascript
+    example1: { type: String } // example: "Example String"
+    example2: [{ type: String }] // example: ["example", "strings", "in", "array"]
+  ```
   ```Javascript
   // 그냥 꺼낼때
   const post = await Photo.findOne({ title: "blah" });
