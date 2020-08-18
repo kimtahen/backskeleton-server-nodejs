@@ -5,7 +5,10 @@ import helmet from 'helmet';
 import * as hpp from 'hpp';
 import * as mongoose from 'mongoose';
 import * as logger from 'morgan';
+const session = require('express-session');
+
 import Routes from './interfaces/routes.interface';
+const passport = require('./libs/passport');
 import errorMiddleware from './middlewares/error.middleware';
 
 class App {
@@ -37,17 +40,18 @@ class App {
   private initializeMiddlewares() {
     if (this.env) {
       this.app.use(hpp());
-      this.app.use(helmet());
       this.app.use(logger('combined'));
       this.app.use(cors({ origin: 'your.domain.com', credentials: true }));
     } else {
       this.app.use(logger('dev'));
-      this.app.use(cors({ origin: true, credentials: true }));
+      this.app.use(cors({origin: true, credentials: true}));
     }
-
+    this.app.use(session({ secret: 'ohou' }));
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
+    this.app.use(passport.initialize());
+    this.app.use(passport.session());
   }
 
   private initializeRoutes(routes: Routes[]) {
