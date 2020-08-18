@@ -48,6 +48,7 @@
     title: "blah",
     content: "blah",
     userId: {
+      _id: "5ee8c5d738d4dc5431ced49a",
       name: "chunghwan",
       email: "chunghwanyoon@kakao.com",
       password: "asldfjadslkfjdalsfdaskf"
