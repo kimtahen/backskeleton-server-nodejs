@@ -18,7 +18,7 @@ export class LoginController {
 
   public loginPage = (req: Request, res: Response, next: NextFunction) => {
     if(req.user){
-      return res.redirect('/login/info');
+      return res.redirect('/api/login/info');
     }
     return res.sendFile(`D:\\workspace\\reactStudy\\react-study-back\\src\\static\\login.html`);
   }

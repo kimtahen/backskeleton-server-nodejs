@@ -3,8 +3,9 @@ import { IsDefined, IsOptional, IsIn, IsEmail, IsDate } from 'class-validator';
 export class CreateProjectDto {
   public author: string;
   public title: string;
+  public titleImage: string;
   public additionalInfo: DetailedInformation;
-  public data: string;
+  public content: string;
 }
 class DetailedInformation {
   public spaceType: number;

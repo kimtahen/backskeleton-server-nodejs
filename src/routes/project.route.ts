@@ -19,7 +19,7 @@ export class ProjectRoute implements Route{
     this.router.post(`${this.path}/write`, validation(CreateProjectDto),this.controller.createProject);
 
     this.router.get(`${this.path}/update/:projectId`, this.controller.updateProjectPage);
-    this.router.post(`${this.path}/update/:projectId`,validation(CreateProjectDto), this.controller.updateProject);
+    this.router.put(`${this.path}/update/:projectId`,validation(CreateProjectDto), this.controller.updateProject);
 
     this.router.delete(`${this.path}/:projectId`, this.controller.deleteProject);
   }

@@ -82,6 +82,34 @@ PhotoEntity: {
   commentIds: [{ type: Schema.Types.ObjectId, ref: 'comment' }] // comment 모델 외래키
 }
 
+/* ProjectEntity: 상단 "집들이" 탭 */
+ProjectEntity: {
+  author:{ type: Schema.Types.ObjectId, ref: 'user', },
+  title:{ type: String, required: true, },
+  titleImage: { type: String, required: true, },
+  date: { type: Date, required: true, default: Date.now(), },
+  like: { type: Number, default: 0, },
+  additionalInfo: { 
+    spaceType:{ type: Number, required: true, },
+    roomSize:{ type: Number, required: true, },
+    workType: { type: Number, required: true, },
+    category: { type: Number, required: true, },
+    familyType: { type: Number, required: true, },
+    region: { type: String, default: '', },
+    style: { type: String, default: '', },
+    period: { type: String, default: '', },
+    budget: { type: Number, default: '', },
+    entireTone: { type: String, default: '', },
+    wallColor: { type: String, default: '', },
+    floorColor: { type: String, default: '', },
+    details: { type: String, default: '', },
+    link: { type: String, default: '', },
+    copyright: { type: String, default: '', },
+  },
+  content: { type: String, required: true, },
+  comment: [ { type: Schema.Types.ObjectId, ref: 'comment', }, ],  
+}
+
 /* CommentEntity: 댓글 */
 CommentEntity: {
   photoId: { type: Schema.Types.ObjectId, ref: 'photo' },
@@ -95,6 +123,7 @@ CommentEntity: {
 - 이 프로젝트의 루트 디렉토리에서 `npm run dev`로 프로젝트를 실행시킨 이후,
 - baseURL: `http://localhost:3000/api`
 - 아래는 `http method / endpoint / description => return entity` 형식이에요.
+
 - User API
   - GET `baseURL/user` 전체 회원목록 조회 => UserEntity[] 
   - GET `baseURL/user/:email` 이메일로 특정회원 조회 => UserEntity
@@ -109,4 +138,13 @@ CommentEntity: {
   - PUT `baseURL/photo/:photoId` 사진 게시글 수정 => PhotoEntity
   - DELETE `baseURL/photo/:photoId` 사진 게시글 삭제 => PhotoEntity
 
+- Project API
+  - GET `baseURL/project` 전체 집들이 게시글 조회 => ProjectEntity[]
+  - GET `baseURL/project/find/:projectId` 집들이 고유 아이디로 하나의 게시글 조회 => ProjectEntity
+  - POST `baseURL/project/write` 집들이 게시글 등록 => ProjectEntity
+  - PUT `baseURL/project/update/:projectId` 집들이 게시글 수정 => ProjectEntity
+  - DELETE `baseURL/project/:projectId` 집들이 게시글 삭제 => ProjectEntity
+  - 게시글 등록은 로그인 세션이 있어야 가능합니다
+  - 게시글 수정 및 삭제는 그 게시글의 로그인 세션을 가지고 있어야 가능합니다.
+  
 - Comment API

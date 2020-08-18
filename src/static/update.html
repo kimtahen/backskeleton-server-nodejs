@@ -3,10 +3,11 @@
     <title>project</title>
 </head>
 <body>
-<form action="/project/update/5f3a240dc759af2a6c886e4a" method="post" >
+<form action="/api/project/update/5f3b662c97e4a20d2cfc0839" method="put" >
     <table border="1px dotted black" bgcolor="#ffe4c4">
         <tr><td>title //required//</td><td><input type="text" name="title" required ><br></td></tr>
-        <tr><td>data //required//</td><td><input type="text" name="data" required ><br></td></tr>
+        <tr><td>titleImage //required//</td><td><input type="text" name="titleImage" required ><br></td></tr>
+        <tr><td>content //required//</td><td><input type="text" name="content" required ><br></td></tr>
     </table>
     <table border="1px solid black" bgcolor="#6a5acd">
         <tr><td>spaceType //required//</td><td><input type="text" name="spaceType" required ><br></td></tr>
@@ -25,6 +26,7 @@
         <tr><td>link:</td><td><input type="text" name="link"><br></td></tr>
         <tr><td>copyright:</td><td><input type="text" name="copyright"><br></td></tr>
     </table>
+    <input type="submit">
     <input type="submit">
 </form>
 </body>

@@ -12,6 +12,8 @@ passport.use(new LocalStrategy({
 }, async (username: string, password: string, done: any): Promise<IUser> => {
   const user: IUser = await Users.findOne({email: username});
   const encryptedPassword = await cryptor.encrypt(password);
+  console.log(user);
+  console.log(encryptedPassword);
   if (!user || user.password !== encryptedPassword) {
     return done(null, false, {message: `check your id & pw`});
   }

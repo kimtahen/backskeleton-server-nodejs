@@ -20,6 +20,10 @@ const ProjectSchema : Schema = new Schema({
     type: String,
     required: true,
   },
+  titleImage: {
+    type: String,
+    required: true,
+  },
   date: {
     type: Date,
     required: true,
@@ -91,16 +95,23 @@ const ProjectSchema : Schema = new Schema({
       default: '',
     },
   },
-  data: {
+  content: {
     type: String,
     required: true,
   },
+  comment: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'comment',
+    },
+  ],
 });
 
 ProjectSchema.statics.createProject = async (clientData: CreateProjectDto): Promise<Iproject> => {
   const project: Iproject = new Projects({
     author: clientData.author,
     title: clientData.title,
+    titleImage: clientData.titleImage,
     additionalInfo: {
       spaceType: clientData.additionalInfo.spaceType,
       roomSize: clientData.additionalInfo.roomSize,
@@ -118,7 +129,7 @@ ProjectSchema.statics.createProject = async (clientData: CreateProjectDto): Prom
       link: clientData.additionalInfo.link,
       copyright: clientData.additionalInfo.copyright,
     },
-    data: clientData.data,
+    content: clientData.content,
   });
   return await project.save();
 };
