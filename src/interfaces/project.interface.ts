@@ -2,10 +2,12 @@ import { Document } from 'mongoose';
 
 export interface Iproject extends Document{
   title: string;
+  titleImage: string;
   date?: string;
   like?: number;
   additionalInfo: DetailedInformation;
-  data: string;
+  content: string;
+  comment: string[];
 }
 export interface DetailedInformation {
   spaceType: number;

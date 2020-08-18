@@ -23,7 +23,7 @@ export class ProjectController {
 
   public createProjectPage = (req: Request, res: Response, next: NextFunction) => {
     if(!req.user){
-      return res.redirect(`/login`);
+      return res.redirect(`/api/login`);
     }
     return res.sendFile('D:\\workspace\\reactStudy\\react-study-back\\src\\static\\project.html');
   }
@@ -35,6 +35,7 @@ export class ProjectController {
       // @ts-ignore()
       author: req.user._id,
       title : req.body.title,
+      titleImage: req.body.titleImage,
       additionalInfo: {
         spaceType: req.body.spaceType,
         roomSize: req.body.roomSize,
@@ -52,13 +53,13 @@ export class ProjectController {
         link: req.body.link,
         copyright: req.body.copyright,
       },
-      data: req.body.data,
+      content: req.body.content,
     };
 
     try {
       const newProject: Iproject = await this.service.createProject(projectData);
       console.log(newProject);
-      res.redirect(`/project`);
+      res.redirect(`/api/project`);
     } catch (err) {
       next(err);
     }
@@ -67,7 +68,7 @@ export class ProjectController {
   public updateProjectPage = async (req: Request, res: Response, next: NextFunction) => {
     const id: string = req.params.projectId;
     if(!req.user){
-      return res.redirect(`/login`);
+      return res.redirect(`/api/login`);
     }
     // @ts-ignore
     if(!await this.service.checkAuthority(req.user._id,id)){
@@ -82,6 +83,7 @@ export class ProjectController {
       // @ts-ignore()
       author: req.user._id,
       title : req.body.title,
+      titleImage : req.body.titleImage,
       additionalInfo: {
         spaceType: req.body.spaceType,
         roomSize: req.body.roomSize,
@@ -99,12 +101,19 @@ export class ProjectController {
         link: req.body.link,
         copyright: req.body.copyright,
       },
-      data: req.body.data,
+      content: req.body.content,
     };
     const project: Iproject = await this.service.updateProject(id, projectData);
   }
   public deleteProject = async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.projectId;
+    if(!req.user){
+      return res.redirect(`/api/login`);
+    }
+    // @ts-ignore
+    if(!await this.service.checkAuthority(req.user._id,id)){
+      return res.status(401).json({message: `your account don't have access to it`});
+    }
     const deletedProject: Iproject = await this.service.deleteProject(id);
     if(!deletedProject){
       return res.status(404).json({message: 'project not found'});

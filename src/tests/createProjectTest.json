@@ -1,11 +1,112 @@
 {
-  "title": "b",
-  "additionalInfo": {
-    "spaceType": "1",
-    "roomSize": "2",
-    "workType": "1",
-    "category": "4",
-    "familyType": "3"
-  },
-  "data": "helloworld"
+  "data": [
+    {
+      "additionalInfo": {
+        "region": "7",
+        "style": "8",
+        "period": "7",
+        "budget": null,
+        "entireTone": "",
+        "wallColor": "",
+        "floorColor": "",
+        "details": "",
+        "link": "",
+        "copyright": "",
+        "spaceType": 6,
+        "roomSize": 6,
+        "workType": 78,
+        "category": 7,
+        "familyType": 6
+      },
+      "date": "2020-08-18T05:20:10.947Z",
+      "like": 0,
+      "comment": [],
+      "_id": "5f3b65cd97e4a20d2cfc0837",
+      "author": {
+        "status": "0",
+        "_type": "0",
+        "_id": "5f3b655497e4a20d2cfc0835",
+        "email": "kimtahen@naver.com",
+        "name": "KimTaeHyeon",
+        "password": "qpCgx4pUyF8awRhXueWUOfj/PfM=",
+        "__v": 0
+      },
+      "title": "first",
+      "titleImage": "firstImage",
+      "content": "firstContent",
+      "__v": 0
+    },
+    {
+      "additionalInfo": {
+        "region": "2",
+        "style": "2",
+        "period": "2",
+        "budget": 2,
+        "entireTone": "2",
+        "wallColor": "2",
+        "floorColor": "2",
+        "details": "2",
+        "link": "2",
+        "copyright": "",
+        "spaceType": 2,
+        "roomSize": 2,
+        "workType": 2,
+        "category": 2,
+        "familyType": 2
+      },
+      "date": "2020-08-18T05:20:10.947Z",
+      "like": 0,
+      "comment": [],
+      "_id": "5f3b65fe97e4a20d2cfc0838",
+      "author": {
+        "status": "0",
+        "_type": "0",
+        "_id": "5f3b655497e4a20d2cfc0835",
+        "email": "kimtahen@naver.com",
+        "name": "KimTaeHyeon",
+        "password": "qpCgx4pUyF8awRhXueWUOfj/PfM=",
+        "__v": 0
+      },
+      "title": "second",
+      "titleImage": "secondImage",
+      "content": "secondContent",
+      "__v": 0
+    },
+    {
+      "additionalInfo": {
+        "region": "3",
+        "style": "3",
+        "period": "3",
+        "budget": 3,
+        "entireTone": "",
+        "wallColor": "",
+        "floorColor": "",
+        "details": "",
+        "link": "",
+        "copyright": "",
+        "spaceType": 3,
+        "roomSize": 3,
+        "workType": 3,
+        "category": 3,
+        "familyType": 3
+      },
+      "date": "2020-08-18T05:20:10.947Z",
+      "like": 0,
+      "comment": [],
+      "_id": "5f3b662c97e4a20d2cfc0839",
+      "author": {
+        "status": "0",
+        "_type": "0",
+        "_id": "5f3b656697e4a20d2cfc0836",
+        "email": "macklemorellc@naver.com",
+        "name": "Macklemore",
+        "password": "2GBxjhbVUdZrsYJN6tDoZB1QD/4=",
+        "__v": 0
+      },
+      "title": "third",
+      "titleImage": "thirdImage",
+      "content": "thirdContent",
+      "__v": 0
+    }
+  ]
 }

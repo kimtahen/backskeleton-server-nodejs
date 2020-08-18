@@ -81,6 +81,12 @@ PhotoEntity: {
   bookmarks: { type: Number, default: 0 }, 
   commentIds: [{ type: Schema.Types.ObjectId, ref: 'comment' }] // comment 모델 외래키
 }
+/* ProjectEntity: 상단 "집들이" 탭 */
+ProjectEntity: {
+
+}
+
+
 
 /* CommentEntity: 댓글 */
 CommentEntity: {
@@ -109,4 +115,6 @@ CommentEntity: {
   - PUT `baseURL/photo/:photoId` 사진 게시글 수정 => PhotoEntity
   - DELETE `baseURL/photo/:photoId` 사진 게시글 삭제 => PhotoEntity
 
+- Project API
+  - GET `baseURL/` 전체 집들이 게시글 조회
 - Comment API
