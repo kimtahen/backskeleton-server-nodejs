@@ -7,7 +7,13 @@ export class ProjectService {
   public project = Projects;
 
   public getProjects = async () => {
-    const projects = await this.project.find({}).populate('author').sort({date: 1});
+    const projects = await this.project.find({})
+      .populate('author')
+      .populate('comments')
+      .populate({path:'comments',populate:{path:'userId'}})
+      .populate({path:'comments',populate:{path:'lowerCommentId'}})
+      .populate({path:'comments',populate:{path:'lowerCommentId',populate:{path:'userId'}}})
+      .sort({date: 1});
     return projects;
   }
   public getProjectById = async (id:string) => {
@@ -20,12 +26,6 @@ export class ProjectService {
   }
   public checkAuthority = async (userId: string, projectId: string) => {
     const project = await this.getProjectById(projectId);
-    // @ts-ignore
-    console.log(String(userId));
-    // @ts-ignore
-    console.log(String(project.author._id));
-    // @ts-ignore
-    console.log(String(userId) === String(project.author._id));
     // @ts-ignore
     return String(userId) === String(project.author._id);
   }

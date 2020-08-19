@@ -58,7 +58,6 @@ export class ProjectController {
 
     try {
       const newProject: Iproject = await this.service.createProject(projectData);
-      console.log(newProject);
       res.redirect(`/api/project`);
     } catch (err) {
       next(err);
