@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 
 export interface IComment extends Document {
-  postId: string;
+  lowerCommentId?: string[];
   userId: string;
   content: string;
   likes: number;
