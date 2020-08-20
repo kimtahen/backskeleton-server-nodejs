@@ -17,7 +17,13 @@ export class ProjectService {
     return projects;
   }
   public getProjectById = async (id:string) => {
-    const project = await this.project.findOne({_id:id}).populate('author');
+    const project = await this.project.findOne({_id:id}).populate('author')
+      .populate('author')
+      .populate('comments')
+      .populate({path:'comments',populate:{path:'userId'}})
+      .populate({path:'comments',populate:{path:'lowerCommentId'}})
+      .populate({path:'comments',populate:{path:'lowerCommentId',populate:{path:'userId'}}})
+      .sort({date: 1});
     return project;
   }
   public createProject = async (clientData: CreateProjectDto)=>{

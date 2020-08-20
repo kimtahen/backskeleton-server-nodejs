@@ -30,6 +30,10 @@ const CommentSchema: Schema = new Schema({
     type: Number,
     default: 0,
   },
+  date: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 
 CommentSchema.statics.createComment = async (clientData: CreateCommentDto): Promise<IComment> => {
