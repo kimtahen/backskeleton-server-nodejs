@@ -11,8 +11,8 @@ export class ProjectService {
       .populate('author')
       .populate('comments')
       .populate({path:'comments',populate:{path:'userId'}})
-      .populate({path:'comments',populate:{path:'lowerCommentId'}})
-      .populate({path:'comments',populate:{path:'lowerCommentId',populate:{path:'userId'}}})
+      .populate({path:'comments',populate:{path:'comments'}})
+      .populate({path:'comments',populate:{path:'comments',populate:{path:'userId'}}})
       .sort({date: 1});
     return projects;
   }

@@ -11,12 +11,16 @@ export interface CommentModel extends Model<Comment> {
 }
 
 const CommentSchema: Schema = new Schema({
-  lowerCommentId: [
+  comments: [
     {
       type: Schema.Types.ObjectId,
       ref: 'comment',
     },
   ],
+  upperRef: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'user',
@@ -39,6 +43,7 @@ const CommentSchema: Schema = new Schema({
 CommentSchema.statics.createComment = async (clientData: CreateCommentDto): Promise<IComment> => {
   const comment: IComment = new Comments({
     userId: clientData.userId,
+    upperRef: clientData.upperRef,
     content: clientData.content,
   });
   return await comment.save();
