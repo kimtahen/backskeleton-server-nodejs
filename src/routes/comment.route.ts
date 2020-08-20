@@ -12,8 +12,8 @@ export class CommentRoute implements Route{
     this.initializeRoutes();
   }
   private initializeRoutes(){
-    this.router.post(`${this.path}/:type/:Id`,this.controller.createComment);
-    // this.router.put(`${this.path}/:type/:commentId`,validation(CreateCommentDto),this.controller.updateComment);
+    this.router.post(`${this.path}/:type/:Id`,validation(CreateCommentDto),this.controller.createComment);
+    this.router.put(`${this.path}/:commentId`,validation(CreateCommentDto),this.controller.updateComment);
     // this.router.delete(`${this.path}/:type/:commentId`,this.controller.deleteComment);
   }
 
