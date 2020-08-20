@@ -6,7 +6,7 @@ export class CommentController {
 
   public createComment = async (req: Request, res: Response, next: NextFunction) => {
     const type = req.params.type;
-    const Id = req.params.Id;
+    const id = req.params.id;
     let document = req.body;
     let result;
     if (!req.user) {
@@ -15,16 +15,11 @@ export class CommentController {
 
     // @ts-ignore
     document.userId = req.user._id;
-
-    if (type === 'project') {
-      result = await this.service.createProjectComment(document, Id);
-    } else if (type === 'photo') {
-      result = await this.service.createPhotoComment(document, Id);
-    } else if (type === "comment") {
-      result = await this.service.createLowerComment(document, Id);
-    } else {
+    document.upperRef = id;
+    if (!(type === 'project' || type === 'photo' || type === 'comment')){
       return res.status(400).json({message: 'Undefined type'});
     }
+    result = await this.service.createComment(document, id, type);
 
     if(!result){
       return res.status(404).json({message: 'Not Found'});
@@ -43,7 +38,7 @@ export class CommentController {
     // @ts-ignore
     let checkValid = await this.service.checkAuthority(req.user._id,commentId)
     if (checkValid === false){
-      return res.status(401).json({messsage: 'Unauthorized'});
+      return res.status(401).json({message: 'Unauthorized'});
     }
     if (checkValid === null){
       return res.status(404).json({message: 'Not Found'});
@@ -53,14 +48,42 @@ export class CommentController {
     try {
       result = await this.service.updateComment(document, commentId);
     } catch (err) {
-      return res.status(500).json({message:  'Update comment failed'});
+      return res.status(500).json({message:  'Update process failed'});
     }
-    console.log(result);
     return res.status(200).json({data: result});
+  }
+
+  public likeComment = async (req: Request, res: Response, next: NextFunction) => {
+    const commentId = req.params.commentId;
+    if (!req.user) {
+      return res.status(401).json({message: 'Unauthorized'});
+    }
+
   }
 
   public deleteComment = async (req: Request, res: Response, next: NextFunction) => {
     const type = req.params.type;
+    const id = req.params.id;
+    if(!req.user){
+      return res.status(401).json({message: 'Unauthorized'});
+    }
+    // @ts-ignore
+    let checkValid = await this.service.checkAuthority(req.user._id,id);
+    if (checkValid === false){
+      return res.status(401).json({message: 'Unauthorized'});
+    }
+    if (checkValid === null){
+      return res.status(404).json({message: 'Not Found'});
+    }
+
+    let result;
+    try {
+      result = await this.service.deleteComment(id, type);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({message: 'Delete process failed'});
+    }
+    return res.status(200).json({data: result});
   }
 
 }

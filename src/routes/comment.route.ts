@@ -12,9 +12,10 @@ export class CommentRoute implements Route{
     this.initializeRoutes();
   }
   private initializeRoutes(){
-    this.router.post(`${this.path}/:type/:Id`,validation(CreateCommentDto),this.controller.createComment);
+    // type은 상위의 것을 써야 함.
+    this.router.post(`${this.path}/:type/:id`,validation(CreateCommentDto),this.controller.createComment);
     this.router.put(`${this.path}/:commentId`,validation(CreateCommentDto),this.controller.updateComment);
-    // this.router.delete(`${this.path}/:type/:commentId`,this.controller.deleteComment);
+    this.router.delete(`${this.path}/:type/:id`,this.controller.deleteComment);
   }
 
 }
