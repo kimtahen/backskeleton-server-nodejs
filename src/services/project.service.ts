@@ -1,10 +1,14 @@
 import HttpException from '../exceptions/HttpException';
 import { Projects } from '../models/project.model';
+import { Users } from '../models/user.model';
+import { CommentService } from './comment.service';
 import {CreateProjectDto} from '../dtos/project.dto';
 import {Iproject} from '../interfaces/project.interface';
 
 export class ProjectService {
   public project = Projects;
+  public user = Users;
+  public commentService = new CommentService();
 
   public getProjects = async () => {
     const projects = await this.project.find({})
@@ -39,8 +43,20 @@ export class ProjectService {
     const project = await this.project.findOneAndUpdate({_id: id}, clientData, {new: true});
     return project;
   }
-  public deleteProject = async (id: string) => {
-    const project: Iproject = await this.project.findOneAndDelete({_id: id});
+  public deleteProject = async (userId: string, id: string) => {
+    let project;
+    try {
+      project = await this.project.findOneAndDelete({_id: id});
+      if(!project){
+        return null;
+      }
+      project.comments.map(async (value)=>{
+        await this.commentService.deleteComment(value, 'project');
+      });
+    } catch (err) {
+      throw err;
+    }
+
     return project;
   }
 
