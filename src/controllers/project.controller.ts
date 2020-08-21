@@ -113,7 +113,9 @@ export class ProjectController {
     if(!await this.service.checkAuthority(req.user._id,id)){
       return res.status(401).json({message: `your account don't have access to it`});
     }
-    const deletedProject: Iproject = await this.service.deleteProject(id);
+    // @ts-ignore
+    const deletedProject: Iproject = await this.service.deleteProject(req.user._id,id);
+
     if(!deletedProject){
       return res.status(404).json({message: 'project not found'});
     }
