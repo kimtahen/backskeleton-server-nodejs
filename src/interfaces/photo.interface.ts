@@ -20,5 +20,5 @@ export interface IPhoto extends Document {
   // 북마크 개수
   bookmarks: number;
   // 댓글
-  commentIds: string[];
+  comments: string[];
 }
