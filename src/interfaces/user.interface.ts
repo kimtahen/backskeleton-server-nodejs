@@ -7,6 +7,9 @@ export interface IUser extends Document {
   password: string;
   status: UserStatus;
   _type: UserType;
+  likeProjects: string[];
+  likePhotos: string[];
+  likeComments: string[];
 }
 
 enum UserStatus {

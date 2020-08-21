@@ -15,6 +15,7 @@ export class CommentRoute implements Route{
     // type은 상위의 것을 써야 함.
     this.router.post(`${this.path}/:type/:id`,validation(CreateCommentDto),this.controller.createComment);
     this.router.put(`${this.path}/:commentId`,validation(CreateCommentDto),this.controller.updateComment);
+    this.router.put(`${this.path}/like/:commentId`,this.controller.likeComment);
     this.router.delete(`${this.path}/:type/:id`,this.controller.deleteComment);
   }
 

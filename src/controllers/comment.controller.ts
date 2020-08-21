@@ -58,6 +58,19 @@ export class CommentController {
     if (!req.user) {
       return res.status(401).json({message: 'Unauthorized'});
     }
+    // @ts-ignore
+    const userId = req.user._id;
+
+    let result;
+    try {
+      result = await this.service.likeComment(userId, commentId);
+    } catch (err) {
+      return res.status(500).json({message: 'Like process failed'});
+    }
+    if(!result){
+      return res.status(404).json({message: 'Comment not found'});
+    }
+    return res.status(200).json({data:result});
 
   }
 

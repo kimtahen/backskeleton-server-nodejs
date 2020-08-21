@@ -2,6 +2,7 @@ import {IComment} from '../interfaces/comment.interface';
 import {Comments} from '../models/comment.model';
 import {Projects} from '../models/project.model';
 import {Photos} from '../models/photo.model';
+import {Users} from '../models/user.model';
 
 import {CreateCommentDto} from '../dtos/comment.dto';
 
@@ -9,6 +10,7 @@ export class CommentService {
   public comment = Comments;
   public project = Projects;
   public photo = Photos;
+  public user = Users;
 
   public checkAuthority = async (userId: string, commentId: string) => {
     const comment = await this.comment.findOne({_id: commentId})
@@ -55,6 +57,54 @@ export class CommentService {
     return comment;
   };
 
+  public likeComment = async (userId: string, commentId: string) => {
+    let result;
+    if(await this.user.findOne({_id:userId, likeComments:{$in:[commentId]}})) {
+
+      await this.user.findOneAndUpdate({_id:userId},{$pull:{likeComments:commentId}});
+      try{
+        result = await this.comment.findOneAndUpdate({_id:commentId},{$inc:{likes:-1}},{new: true});
+      } catch (err) {
+        try{
+          await this.user.findOneAndUpdate({_id:userId},{$push:{likeComments:commentId}});
+        } catch (err) {
+          console.log('db server failed');
+          throw err;
+        }
+      }
+      if (!result) {
+        try{
+          await this.user.findOneAndUpdate({_id:userId},{$push:{likeComments:commentId}});
+        } catch (err) {
+          console.log('db server failed');
+          throw err;
+        }
+      }
+    } else {
+
+      await this.user.findOneAndUpdate({_id:userId}, {$push:{likeComments:commentId}});
+      try{
+        result = await this.comment.findOneAndUpdate({_id:commentId},{$inc:{likes:1}},{new: true});
+      } catch (err) {
+        try{
+          await this.user.findOneAndUpdate({_id:userId}, {$pull:{likeComments:commentId}})
+        } catch (err) {
+          console.log('db server failed');
+          throw err;
+        }
+      }
+      if(!result){
+        try{
+          await this.user.findOneAndUpdate({_id:userId}, {$pull:{likeComments:commentId}})
+        } catch (err) {
+          console.log('db server failed');
+          throw err;
+        }
+      }
+    }
+    return result;
+  }
+
   public deleteComment = async (commentId: string, type: string) => {
     let comment;
     try {
@@ -79,4 +129,5 @@ export class CommentService {
     // @ts-ignore
     return await this[type].findOneAndUpdate({_id: comment.upperRef}, {$pull: {comments: comment._id}}, {new: true});
   };
+
 }

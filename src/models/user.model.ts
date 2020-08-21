@@ -33,6 +33,18 @@ const UserSchema: Schema = new Schema({
     type: String,
     default: 0,
   },
+  likeProjects: [{
+    type: Schema.Types.ObjectId,
+    ref: 'project',
+  }],
+  likePhotos: [{
+    type: Schema.Types.ObjectId,
+    ref: 'photo',
+  }],
+  likeComments: [{
+    type: Schema.Types.ObjectId,
+    ref: 'comment',
+  }],
 });
 
 UserSchema.statics.createUser = function (email: string, name: string, hashedPassword: string): Promise<IUser> {
