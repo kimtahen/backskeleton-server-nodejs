@@ -82,7 +82,7 @@ export class ProjectController {
     } catch (err) {
       return next(err);
     }
-    if (!authority) throw new HttpException(401, '권한이 없습니다.');
+    if (!authority) return next(new HttpException(401, '권한이 없습니다.'));
 
     return res.status(200).sendFile('D:\\workspace\\reactStudy\\react-study-back\\src\\static\\update.html');
   }
@@ -99,7 +99,7 @@ export class ProjectController {
     } catch (err) {
       return next(err);
     }
-    if (!authority) throw new HttpException(401, '권한이 없습니다.');
+    if (!authority) return next(new HttpException(401, '권한이 없습니다.'));
 
     let projectData: CreateProjectDto = {
       // @ts-ignore()
@@ -145,7 +145,7 @@ export class ProjectController {
     } catch (err) {
       return next(err);
     }
-    if (!authority) throw new HttpException(401, '권한이 없습니다.');
+    if (!authority) return next(new HttpException(401, '권한이 없습니다.'));
 
     try {
       // @ts-ignore

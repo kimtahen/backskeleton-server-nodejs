@@ -45,7 +45,7 @@ export class CommentController {
     } catch (err) {
       return next(err);
     }
-    if (!checkValid) next(new HttpException(401, '권한이 없습니다.'));
+    if (!checkValid) return next(new HttpException(401, '권한이 없습니다.'));
 
     let result;
     try {
@@ -58,7 +58,7 @@ export class CommentController {
 
   public likeComment = async (req: Request, res: Response, next: NextFunction) => {
     const commentId = req.params.commentId;
-    if (!req.user) next(new HttpException(401, '로그인 하세요!'));
+    if (!req.user) return next(new HttpException(401, '로그인 하세요!'));
 
     // @ts-ignore
     const userId = req.user._id;
