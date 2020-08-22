@@ -132,12 +132,13 @@ ProjectEntity: {
     copyright: { type: String, default: '', },
   },
   content: { type: String, required: true, },
-  comment: [ { type: Schema.Types.ObjectId, ref: 'comment', }, ],
+  comments: [ { type: Schema.Types.ObjectId, ref: 'comment', }, ],
 }
 
 /* CommentEntity: 댓글 */
 CommentEntity: {
-  photoId: { type: Schema.Types.ObjectId, ref: 'photo' },
+  comments: [{type: Schema.Types.ObjectId, ref: 'comment'}],
+  upperRef: {type: Schema.Types.ObjectId, required: true,},
   userId: { type: Schema.Types.ObjectId, ref: 'user' },
   content: { type: String, required: true },
   likes: { type: Number, default: 0 }
@@ -177,3 +178,11 @@ CommentEntity: {
   - 게시글 수정 및 삭제는 그 게시글의 로그인 세션을 가지고 있어야 가능합니다.
 
 - Comment API
+  - type은 comment가 달리는 상위의 것을 써야함.
+    - ex) project와 photo에 comment를 달고 싶다면 type에 project or photo를 써주어야 함. 
+    - ex) 대댓글을 달고 싶다면 type에 comment를 써주어야 함.
+    
+  - POST `baseURL/comment/:type/:id` 새로운 댓글 추가 => {data: CommentEntity} 새로운 댓글을 반환함.
+  - PUT `baseURL/comment/:commentId` 댓글 수정 => {data: CommentEntity} 수정한 댓글을 반환함
+  - GET `baseURL/comment/like/:commentId` 좋아요 추가 => {data: CommentEntity} 좋아요가 추가/삭제 된 댓글을 반환함.
+  - DELETE `baseURL/comment/:type/:id` 댓글 삭제 => {data: PhotoEntity or ProjectEntity or CommentEntity} 삭제 요청한 댓글이 달렸던 게시물 or 댓글의 entity를 반환함. 
