@@ -11,27 +11,47 @@ export class ProjectService {
   public commentService = new CommentService();
 
   public getProjects = async () => {
-    const projects = await this.project.find({})
-      .populate('author')
-      .populate('comments')
-      .populate({path:'comments',populate:{path:'userId'}})
-      .populate({path:'comments',populate:{path:'comments'}})
-      .populate({path:'comments',populate:{path:'comments',populate:{path:'userId'}}})
-      .sort({date: 1});
+    let projects;
+    try{
+      projects = await this.project.find({})
+        .populate('author')
+        .populate('comments')
+        .populate({path: 'comments', populate: {path: 'userId'}})
+        .populate({path: 'comments', populate: {path: 'comments'}})
+        .populate({path: 'comments', populate: {path: 'comments', populate: {path: 'userId'}}})
+        .sort({date: 1});
+    } catch (err) {
+      throw new HttpException(500,'db 오류 입니다.');
+    }
+    if (!projects) throw new HttpException(404, '프로젝트를 찾을 수 없습니다.');
     return projects;
+
+
   }
-  public getProjectById = async (id:string) => {
-    const project = await this.project.findOne({_id:id}).populate('author')
-      .populate('author')
-      .populate('comments')
-      .populate({path:'comments',populate:{path:'userId'}})
-      .populate({path:'comments',populate:{path:'lowerCommentId'}})
-      .populate({path:'comments',populate:{path:'lowerCommentId',populate:{path:'userId'}}})
-      .sort({date: 1});
+  public getProjectById = async (projectId:string) => {
+    let project;
+    try {
+      project = await this.project.findOne({_id: projectId}).populate('author')
+        .populate('author')
+        .populate('comments')
+        .populate({path: 'comments', populate: {path: 'userId'}})
+        .populate({path: 'comments', populate: {path: 'lowerCommentId'}})
+        .populate({path: 'comments', populate: {path: 'lowerCommentId', populate: {path: 'userId'}}})
+        .sort({date: 1});
+    } catch (err) {
+      throw new HttpException(500, 'db 오류 입니다.');
+    };
+    if (!project) throw new HttpException(404, '프로젝트를 찾을 수 없습니다.');
     return project;
   }
   public createProject = async (clientData: CreateProjectDto)=>{
-    const project  = await this.project.createProject(clientData);
+    let project;
+    try {
+      project = await this.project.createProject(clientData);
+    } catch (err) {
+      throw new HttpException(500,'db 오류 입니다.');
+    };
+    if(!project) throw new HttpException(400, '프로젝트가 생성되지 않았습니다.');
     return project;
   }
   public checkAuthority = async (userId: string, projectId: string) => {
@@ -40,23 +60,32 @@ export class ProjectService {
     return String(userId) === String(project.author._id);
   }
   public updateProject = async (id: string, clientData: CreateProjectDto)=>{
-    const project = await this.project.findOneAndUpdate({_id: id}, clientData, {new: true});
+    let project;
+    try {
+      project = await this.project.findOneAndUpdate({_id: id}, clientData, {new: true});
+    } catch (err) {
+      throw new HttpException(500, 'db 오류 입니다.');
+    };
+    if(!project) throw new HttpException(404, '프로젝트를 찾을 수 없습니다.');
     return project;
   }
+
+
   public deleteProject = async (userId: string, id: string) => {
     let project;
     try {
       project = await this.project.findOneAndDelete({_id: id});
-      if(!project){
-        return null;
-      }
-      project.comments.map(async (value)=>{
+    } catch (err) {
+      throw new HttpException(500, 'db 오류 입니다.');
+    }
+    if(!project) throw new HttpException(404,'프로젝트를 찾을 수 없습니다.');
+    try {
+      project.comments.map(async (value) => {
         await this.commentService.deleteComment(value, 'project');
       });
     } catch (err) {
-      throw err;
+      throw new HttpException(500, 'db 오류 입니다.');
     }
-
     return project;
   }
 
