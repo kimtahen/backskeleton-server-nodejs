@@ -1,5 +1,6 @@
 import {CommentService} from '../services/comment.service';
 import {Request, Response, NextFunction} from 'express';
+import HttpException from '../exceptions/HttpException';
 
 export class CommentController {
   public service = new CommentService();
@@ -8,56 +9,57 @@ export class CommentController {
     const type = req.params.type;
     const id = req.params.id;
     let document = req.body;
-    let result;
+
     if (!req.user) {
-      return res.status(401).json({message: 'Unauthorized'});
+      return next(new HttpException(401,'로그인 하세요!'));
     }
 
     // @ts-ignore
     document.userId = req.user._id;
     document.upperRef = id;
     if (!(type === 'project' || type === 'photo' || type === 'comment')){
-      return res.status(400).json({message: 'Undefined type'});
+      return next(new HttpException(400, '타입은 project | photo | comment 이중에 하나여야 합니다.'));
     }
-    result = await this.service.createComment(document, id, type);
+    try{
+      const comment = await this.service.createComment(document, id, type);
+      return res.status(200).json({data: comment});
+    } catch (err) {
+      return next(err);
+    }
 
-    if(!result){
-      return res.status(404).json({message: 'Not Found'});
-    }
-    return res.status(200).json({result});
   };
 
   public updateComment = async (req: Request, res: Response, next: NextFunction) => {
     const commentId = req.params.commentId;
     let document = req.body;
     if (!req.user) {
-      return res.status(401).json({message: 'Unauthorized'});
+      return next(new HttpException(401, '로그인 하세요!'));
+
     }
     // @ts-ignore
     document.userId = req.user._id;
-    // @ts-ignore
-    let checkValid = await this.service.checkAuthority(req.user._id,commentId)
-    if (checkValid === false){
-      return res.status(401).json({message: 'Unauthorized'});
+    let checkValid;
+    try {
+      // @ts-ignore
+      checkValid = await this.service.checkAuthority(req.user._id,commentId)
+    } catch (err) {
+      return next(err);
     }
-    if (checkValid === null){
-      return res.status(404).json({message: 'Not Found'});
-    }
+    if (!checkValid) next(new HttpException(401, '권한이 없습니다.'));
 
     let result;
     try {
       result = await this.service.updateComment(document, commentId);
+      return res.status(200).json({data: result});
     } catch (err) {
-      return res.status(500).json({message:  'Update process failed'});
+      return next(err);
     }
-    return res.status(200).json({data: result});
   }
 
   public likeComment = async (req: Request, res: Response, next: NextFunction) => {
     const commentId = req.params.commentId;
-    if (!req.user) {
-      return res.status(401).json({message: 'Unauthorized'});
-    }
+    if (!req.user) next(new HttpException(401, '로그인 하세요!'));
+
     // @ts-ignore
     const userId = req.user._id;
 
@@ -65,11 +67,9 @@ export class CommentController {
     try {
       result = await this.service.likeComment(userId, commentId);
     } catch (err) {
-      return res.status(500).json({message: 'Like process failed'});
+      return next(err);
     }
-    if(!result){
-      return res.status(404).json({message: 'Comment not found'});
-    }
+
     return res.status(200).json({data:result});
 
   }
@@ -77,24 +77,22 @@ export class CommentController {
   public deleteComment = async (req: Request, res: Response, next: NextFunction) => {
     const type = req.params.type;
     const id = req.params.id;
-    if(!req.user){
-      return res.status(401).json({message: 'Unauthorized'});
+    if(!req.user) return next(new HttpException(401, '로그인 하세요!'));
+
+    let checkValid;
+    try {
+      // @ts-ignore
+      checkValid = await this.service.checkAuthority(req.user._id, id);
+    } catch (err) {
+      return next(err);
     }
-    // @ts-ignore
-    let checkValid = await this.service.checkAuthority(req.user._id,id);
-    if (checkValid === false){
-      return res.status(401).json({message: 'Unauthorized'});
-    }
-    if (checkValid === null){
-      return res.status(404).json({message: 'Not Found'});
-    }
+    if (!checkValid) return next(new HttpException(401, '권한이 없습니다.'));
 
     let result;
     try {
       result = await this.service.deleteComment(id, type);
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({message: 'Delete process failed'});
+      return next(err);
     }
     return res.status(200).json({data: result});
   }

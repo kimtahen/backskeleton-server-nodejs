@@ -55,7 +55,13 @@ export class ProjectService {
     return project;
   }
   public checkAuthority = async (userId: string, projectId: string) => {
-    const project = await this.getProjectById(projectId);
+    let project;
+    try {
+      project = await this.getProjectById(projectId);
+    } catch (err) {
+      throw new HttpException(500,'db 오류 입니다.');
+    }
+    if (!project) throw new HttpException(404, '프로젝트를 찾을 수 없습니다.');
     // @ts-ignore
     return String(userId) === String(project.author._id);
   }

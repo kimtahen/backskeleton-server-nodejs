@@ -12,8 +12,7 @@ export class ProjectController {
       const projects : Iproject[] = await this.service.getProjects();
       res.status(200).json({data:projects,message:'ok'});
     } catch (err) {
-      console.log(err);
-      next(err);
+      return next(err);
     }
   }
 
@@ -23,20 +22,20 @@ export class ProjectController {
       const project: Iproject = await this.service.getProjectById(projectId);
       return res.status(200).json({data: project});
     } catch (err) {
-      next(err);
+      return next(err);
     }
   }
 
   public createProjectPage = (req: Request, res: Response, next: NextFunction) => {
     if(!req.user){
-      next(new HttpException(401, '로그인 하세요!'));
+      return next(new HttpException(401, '로그인 하세요!'));
     }
     return res.status(200).sendFile('D:\\workspace\\reactStudy\\react-study-back\\src\\static\\project.html');
   }
 
   public createProject = async (req: Request, res: Response, next: NextFunction) => {
     if(!req.user){
-      next(new HttpException(401, '로그인 하세요!'));
+      return next(new HttpException(401, '로그인 하세요!'));
     }
     let projectData: CreateProjectDto = {
       // @ts-ignore()
@@ -67,21 +66,21 @@ export class ProjectController {
       const newProject: Iproject = await this.service.createProject(projectData);
       res.status(200).json({data: newProject, message:'새로운 프로젝트가 생성되었습니다'});
     } catch (err) {
-      next(err);
+      return next(err);
     }
   }
 
   public updateProjectPage = async (req: Request, res: Response, next: NextFunction) => {
     const projectId: string = req.params.projectId;
     if (!req.user){
-      next(new HttpException(401, '로그인 하세요!'));
+      return next(new HttpException(401, '로그인 하세요!'));
     }
     let authority;
     try {
       // @ts-ignore
       authority = await this.service.checkAuthority(req.user._id, projectId);
     } catch (err) {
-      next(err);
+      return next(err);
     }
     if (!authority) throw new HttpException(401, '권한이 없습니다.');
 
@@ -91,14 +90,14 @@ export class ProjectController {
   public updateProject = async (req: Request, res: Response, next: NextFunction) => {
     const projectId: string = req.params.projectId;
     if (!req.user){
-      next(new HttpException(401, '로그인 하세요!'));
+      return next(new HttpException(401, '로그인 하세요!'));
     }
     let authority;
     try {
       // @ts-ignore
       authority = await this.service.checkAuthority(req.user._id, projectId);
     } catch (err) {
-      next(err);
+      return next(err);
     }
     if (!authority) throw new HttpException(401, '권한이 없습니다.');
 
@@ -131,20 +130,20 @@ export class ProjectController {
       const project: Iproject = await this.service.updateProject(projectId, projectData);
       return res.status(200).json({data: project});
     } catch (err) {
-      next(err);
+      return next(err);
     }
   }
   public deleteProject = async (req: Request, res: Response, next: NextFunction) => {
     const projectId = req.params.projectId;
     if (!req.user){
-      next(new HttpException(401, '로그인 하세요!'));
+      return next(new HttpException(401, '로그인 하세요!'));
     }
     let authority;
     try {
       // @ts-ignore
       authority = await this.service.checkAuthority(req.user._id, projectId);
     } catch (err) {
-      next(err);
+      return next(err);
     }
     if (!authority) throw new HttpException(401, '권한이 없습니다.');
 
@@ -153,7 +152,7 @@ export class ProjectController {
       const deletedProject: Iproject = await this.service.deleteProject(req.user._id, projectId);
       return res.status(200).json({data: deletedProject, message: `project ${projectId} deleted`});
     } catch (err) {
-      next(err);
+      return next(err);
     }
   }
 
