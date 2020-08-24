@@ -7,7 +7,7 @@ export interface Iproject extends Document{
   like?: number;
   additionalInfo: DetailedInformation;
   content: string;
-  comment: string[];
+  comments: string[];
 }
 export interface DetailedInformation {
   spaceType: number;
