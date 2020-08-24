@@ -1,18 +1,15 @@
-import { IsDefined, IsOptional, IsIn, IsEmail, IsDate } from 'class-validator';
+import { IsDefined, IsOptional,IsString, IsIn, IsEmail, IsDate, IsObject } from 'class-validator';
 
-export class CreateProjectDto {
-  public author: string;
-  public title: string;
-  public titleImage: string;
-  public additionalInfo: DetailedInformation;
-  public content: string;
-}
 class DetailedInformation {
+
+  @IsString()
   public spaceType: number;
   public roomSize: number;
   public workType: number;
   public category: number;
   public familyType: number;
+
+  @IsOptional()
   public region: string;
   public style: string;
   public period: string;
@@ -23,6 +20,16 @@ class DetailedInformation {
   public details: string;
   public link: string;
   public copyright: string;
+}
+export class CreateProjectDto {
+  @IsString()
+  public userId: string;
+  public title: string;
+  public titleImage: string;
+  public content: string;
+
+  @IsObject()
+  public additionalInfo: DetailedInformation;
 }
 
 // class 중첩 ??

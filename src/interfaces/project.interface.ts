@@ -1,6 +1,7 @@
 import { Document } from 'mongoose';
 
 export interface Iproject extends Document{
+  userId: string;
   title: string;
   titleImage: string;
   date?: string;
