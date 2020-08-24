@@ -14,7 +14,7 @@ export class ProjectService {
     let projects;
     try{
       projects = await this.project.find({})
-        .populate('author')
+        .populate('userId')
         .populate('comments')
         .populate({path: 'comments', populate: {path: 'userId'}})
         .populate({path: 'comments', populate: {path: 'comments'}})
@@ -31,8 +31,8 @@ export class ProjectService {
   public getProjectById = async (projectId:string) => {
     let project;
     try {
-      project = await this.project.findOne({_id: projectId}).populate('author')
-        .populate('author')
+      project = await this.project.findOne({_id: projectId}).populate('userId')
+        .populate('userId')
         .populate('comments')
         .populate({path: 'comments', populate: {path: 'userId'}})
         .populate({path: 'comments', populate: {path: 'lowerCommentId'}})
@@ -63,7 +63,7 @@ export class ProjectService {
     }
     if (!project) throw new HttpException(404, '프로젝트를 찾을 수 없습니다.');
     // @ts-ignore
-    return String(userId) === String(project.author._id);
+    return String(userId) === String(project.userId._id);
   }
   public updateProject = async (id: string, clientData: CreateProjectDto)=>{
     let project;

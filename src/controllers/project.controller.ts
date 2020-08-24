@@ -39,7 +39,7 @@ export class ProjectController {
     }
     let projectData: CreateProjectDto = {
       // @ts-ignore()
-      author: req.user._id,
+      userId: req.user._id,
       title : req.body.title,
       titleImage: req.body.titleImage,
       additionalInfo: {
@@ -103,7 +103,7 @@ export class ProjectController {
 
     let projectData: CreateProjectDto = {
       // @ts-ignore()
-      author: req.user._id,
+      userId: req.user._id,
       title : req.body.title,
       titleImage : req.body.titleImage,
       additionalInfo: {

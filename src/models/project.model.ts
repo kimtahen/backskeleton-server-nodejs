@@ -12,7 +12,7 @@ export interface ProjectModel extends Model<Project> {
 }
 
 const ProjectSchema : Schema = new Schema({
-  author:{
+  userId:{
     type: Schema.Types.ObjectId,
     ref: 'user',
   },
@@ -109,7 +109,7 @@ const ProjectSchema : Schema = new Schema({
 
 ProjectSchema.statics.createProject = async (clientData: CreateProjectDto): Promise<Iproject> => {
   const project: Iproject = new Projects({
-    author: clientData.author,
+    userId: clientData.userId,
     title: clientData.title,
     titleImage: clientData.titleImage,
     additionalInfo: {
