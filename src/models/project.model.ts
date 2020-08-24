@@ -99,7 +99,7 @@ const ProjectSchema : Schema = new Schema({
     type: String,
     required: true,
   },
-  comments: [
+  commentIds: [
     {
       type: Schema.Types.ObjectId,
       ref: 'comment',

@@ -11,7 +11,7 @@ export interface CommentModel extends Model<Comment> {
 }
 
 const CommentSchema: Schema = new Schema({
-  comments: [
+  commentIds: [
     {
       type: Schema.Types.ObjectId,
       ref: 'comment',
