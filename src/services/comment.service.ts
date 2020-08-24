@@ -31,7 +31,7 @@ export class CommentService {
     let result;
     try {
       // @ts-ignore
-      result = await this[type].findOneAndUpdate({_id: upperId}, {$push: {comments: comment._id}}, {new: true});
+      result = await this[type].findOneAndUpdate({_id: upperId}, {$push: {commentIds: comment._id}}, {new: true});
     } catch (err) {
       this.comment.findOneAndDelete({_id: comment._id})
         .then(() => {
@@ -122,10 +122,10 @@ export class CommentService {
     try {
       await (async function deletion(Id: string, db: any) {
         let arr = await db.findOneAndDelete({_id: Id});
-        if (arr.comments.length === 0) {
+        if (arr.commentIds.length === 0) {
           return;
         }
-        arr.comments.map((value: string) => {
+        arr.commentIds.map((value: string) => {
           deletion(value, db);
         });
       })(commentId, this.comment);
@@ -134,7 +134,7 @@ export class CommentService {
     }
 
     // @ts-ignore
-    return await this[type].findOneAndUpdate({_id: comment.upperRef}, {$pull: {comments: comment._id}}, {new: true});
+    return await this[type].findOneAndUpdate({_id: comment.upperRef}, {$pull: {commentIds: comment._id}}, {new: true});
   };
 
 }

@@ -48,7 +48,7 @@ const PhotoSchema: Schema = new Schema({
     type: Number,
     default: 0,
   },
-  comments: [
+  commentIds: [
     {
       type: Schema.Types.ObjectId,
       ref: 'comment',

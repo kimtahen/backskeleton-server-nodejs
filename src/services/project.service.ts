@@ -15,10 +15,10 @@ export class ProjectService {
     try{
       projects = await this.project.find({})
         .populate('userId')
-        .populate('comments')
-        .populate({path: 'comments', populate: {path: 'userId'}})
-        .populate({path: 'comments', populate: {path: 'comments'}})
-        .populate({path: 'comments', populate: {path: 'comments', populate: {path: 'userId'}}})
+        .populate('commentIds')
+        .populate({path: 'commentIds', populate: {path: 'userId'}})
+        .populate({path: 'commentIds', populate: {path: 'commentIds'}})
+        .populate({path: 'commentIds', populate: {path: 'commentIds', populate: {path: 'userId'}}})
         .sort({date: 1});
     } catch (err) {
       throw new HttpException(500,'db 오류 입니다.');
@@ -33,10 +33,10 @@ export class ProjectService {
     try {
       project = await this.project.findOne({_id: projectId}).populate('userId')
         .populate('userId')
-        .populate('comments')
-        .populate({path: 'comments', populate: {path: 'userId'}})
-        .populate({path: 'comments', populate: {path: 'lowerCommentId'}})
-        .populate({path: 'comments', populate: {path: 'lowerCommentId', populate: {path: 'userId'}}})
+        .populate('commentIds')
+        .populate({path: 'commentIds', populate: {path: 'userId'}})
+        .populate({path: 'commentIds', populate: {path: 'lowerCommentId'}})
+        .populate({path: 'commentIds', populate: {path: 'lowerCommentId', populate: {path: 'userId'}}})
         .sort({date: 1});
     } catch (err) {
       throw new HttpException(500, 'db 오류 입니다.');
@@ -86,7 +86,7 @@ export class ProjectService {
     }
     if(!project) throw new HttpException(404,'프로젝트를 찾을 수 없습니다.');
     try {
-      project.comments.map(async (value) => {
+      project.commentIds.map(async (value) => {
         await this.commentService.deleteComment(value, 'project');
       });
     } catch (err) {
