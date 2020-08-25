@@ -1,4 +1,4 @@
-{
+({
   "region": "7",
   "style": "8",
   "period": "7",
@@ -17,15 +17,14 @@
   "title": "first",
   "titleImage": "firstImage",
   "content": "firstContent"
-}
-
+},
 {
   "id": "kimtahen@naver.com",
   "pw": "0347"
-}
+})
 
-firstproject
-5f3cf301a066e00f7028e0da
+// firstproject
+// 5f3cf301a066e00f7028e0da
 
-secondproject
-5f3cf394621f9c60b4969867
+// secondproject
+// 5f3cf394621f9c60b4969867
