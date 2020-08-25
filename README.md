@@ -21,11 +21,11 @@
 - [x] Photo, User, Project API
 - [x] Comment 모델, API 구현
 - [x] Comment like 구현
-- [ ] Photo like 구현과, delete시 user의 likePhotos 의 photo._id 제거 기능
-- [ ] Project like 구현과, delete시 user의 likeProjects 의 project._id 제거 기능
-- [ ] Comment like 구현과, delete시 user의 likeComments 의 comment._id 제거 기능
+- [ ] Photo like 구현과, delete시 user의 likePhotos 의 photo.\_id 제거 기능
+- [ ] Project like 구현과, delete시 user의 likeProjects 의 project.\_id 제거 기능
+- [ ] Comment like 구현과, delete시 user의 likeComments 의 comment.\_id 제거 기능
 - [ ] Photo user 인증 기능 추가
-- [ ] Aws S3 api 구현
+- [x] Aws S3 api 구현
 
 ## HOW TO USE THIS API
 
@@ -178,11 +178,28 @@ CommentEntity: {
   - 게시글 수정 및 삭제는 그 게시글의 로그인 세션을 가지고 있어야 가능합니다.
 
 - Comment API
+
   - type은 comment가 달리는 상위의 것을 써야함.
-    - ex) project와 photo에 comment를 달고 싶다면 type에 project or photo를 써주어야 함. 
+
+    - ex) project와 photo에 comment를 달고 싶다면 type에 project or photo를 써주어야 함.
     - ex) 대댓글을 달고 싶다면 type에 comment를 써주어야 함.
-    
+
   - POST `baseURL/comment/:type/:id` 새로운 댓글 추가 => {data: CommentEntity} 새로운 댓글을 반환함.
   - PUT `baseURL/comment/:commentId` 댓글 수정 => {data: CommentEntity} 수정한 댓글을 반환함
   - GET `baseURL/comment/like/:commentId` 좋아요 추가 => {data: CommentEntity} 좋아요가 추가/삭제 된 댓글을 반환함.
-  - DELETE `baseURL/comment/:type/:id` 댓글 삭제 => {data: PhotoEntity or ProjectEntity or CommentEntity} 삭제 요청한 댓글이 달렸던 게시물 or 댓글의 entity를 반환함. 
+  - DELETE `baseURL/comment/:type/:id` 댓글 삭제 => {data: PhotoEntity or ProjectEntity or CommentEntity} 삭제 요청한 댓글이 달렸던 게시물 or 댓글의 entity를 반환함.
+
+- Uploader API
+
+  - 이 API는 .png, .jpg파일을 지정된 AWS S3 Bucket에 저장하는 API입니다.
+  - `집들이`, `사진` 탭을 작업하시는 분들은 해당 모델의 데이터를 하나 추가하면서 반드시 이 API를 호출하면서 S3에 이미지를 저장하셔야 합니다!!
+  - S3에 이미지를 저장한 이후 웹단에서 그 이미지를 사용하실 때는 이 API를 사용하지 않고 직접 우리 S3에 접근해서 해당 이미지 이름으로 된 파일을 직접 가져오셔야 구현할 수 있을거에요.
+  - POST `baseURL/uploader/upload` 파일을 S3에 업로드
+
+    - 주의! 파일 이름 지정에 유의해주세요. S3자체에서 똑같은 파일이름이 이미 S3 Bucket에 존재하면 덮어씌웁니다!!
+    - Javascript의 `formData`로 req.body를 보내야 합니다.
+    - 형식은 `multipart/form-data`
+    - key는 'images'로 지정해주세요.
+    - reference: [MDN](https://developer.mozilla.org/ko/docs/Web/API/FormData/FormData), [MDN_2](https://developer.mozilla.org/ko/docs/Web/API/FormData)
+
+  - POST `baseURL/uploader/delete` 파일을 S3에서 삭제

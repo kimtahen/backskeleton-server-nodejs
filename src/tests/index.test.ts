@@ -1,9 +1,9 @@
 import * as request from 'supertest';
 import App from '../app';
-import IndexRoute from '../routes/index.route';
+import { IndexRoute } from '../routes/index.route';
 
 afterAll(async () => {
-  await new Promise(resolve => setTimeout(() => resolve(), 500));
+  await new Promise((resolve) => setTimeout(() => resolve(), 500));
 });
 
 describe('Testing Index', () => {
@@ -12,9 +12,7 @@ describe('Testing Index', () => {
       const indexRoute = new IndexRoute();
       const app = new App([indexRoute]);
 
-      return request(app.getServer())
-      .get(`${indexRoute.path}`)
-      .expect(200);
+      return request(app.getServer()).get(`${indexRoute.path}`).expect(200);
     });
   });
 });
