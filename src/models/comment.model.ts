@@ -7,7 +7,7 @@ export interface Comment extends IComment {
 }
 
 export interface CommentModel extends Model<Comment> {
-  createComment(clientData: CreateCommentDto) :Promise<IComment>;
+  createComment(clientData: CreateCommentDto): Promise<IComment>;
 }
 
 const CommentSchema: Schema = new Schema({
@@ -34,6 +34,12 @@ const CommentSchema: Schema = new Schema({
     type: Number,
     default: 0,
   },
+  likeUserIds: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+    },
+  ],
   date: {
     type: Date,
     default: Date.now(),

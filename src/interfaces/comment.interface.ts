@@ -7,4 +7,5 @@ export interface IComment extends Document {
   userId: string;
   content: string;
   likes: number;
+  likeUserIds: string[];
 }
