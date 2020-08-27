@@ -1,6 +1,6 @@
-import { Schema, Model, model } from 'mongoose';
-import { Iproject } from '../interfaces/project.interface';
-import { CreateProjectDto } from '../dtos/project.dto';
+import {Schema, Model, model} from 'mongoose';
+import {Iproject} from '../interfaces/project.interface';
+import {CreateProjectDto} from '../dtos/project.dto';
 import {IUser} from '../interfaces/user.interface';
 
 export interface Project extends Iproject {
@@ -8,15 +8,15 @@ export interface Project extends Iproject {
 }
 
 export interface ProjectModel extends Model<Project> {
-  createProject(clientData :CreateProjectDto) :Promise<Iproject>;
+  createProject(clientData: CreateProjectDto): Promise<Iproject>;
 }
 
-const ProjectSchema : Schema = new Schema({
-  userId:{
+const ProjectSchema: Schema = new Schema({
+  userId: {
     type: Schema.Types.ObjectId,
     ref: 'user',
   },
-  title:{
+  title: {
     type: String,
     required: true,
   },
@@ -29,16 +29,22 @@ const ProjectSchema : Schema = new Schema({
     required: true,
     default: Date.now(),
   },
-  like: {
+  likes: {
     type: Number,
     default: 0,
   },
+  likeUserIds: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+    },
+  ],
   additionalInfo: {
-    spaceType:{
+    spaceType: {
       type: Number,
       required: true,
     },
-    roomSize:{
+    roomSize: {
       type: Number,
       required: true,
     },

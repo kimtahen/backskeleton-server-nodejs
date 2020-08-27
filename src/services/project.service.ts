@@ -76,8 +76,52 @@ export class ProjectService {
     return project;
   }
 
+  public likeProject = async(userId: string, projectId: string) => {
+    let result;
+    if (await this.user.findOne({_id: userId, likeProjects: {$in: [projectId]}})) {
+      await this.user.findOneAndUpdate({_id: userId}, {$pull: {likeProjects: projectId}});
+      await this.project.findOneAndUpdate({_id: projectId}, {$pull: {likeUserIds: userId}});
+      try {
+        result = await this.project.findOneAndUpdate({_id: projectId}, {$inc: {likes: -1}}, {new: true});
+      } catch (err) {
+        try {
+          await this.user.findOneAndUpdate({_id: userId}, {$push: {likeProjects: projectId}});
+        } catch (err) {
+          throw new HttpException(500,'db 오류 입니다.');
+        }
+      }
+      if (!result) {
+        try {
+          await this.user.findOneAndUpdate({_id: userId}, {$push: {likeProjects: projectId}});
+        } catch (err) {
+          throw new HttpException(500,'db 오류 입니다.');
+        }
+      }
+    } else {
+      await this.user.findOneAndUpdate({_id: userId}, {$push: {likeProjects: projectId}});
+      await this.project.findOneAndUpdate({_id: projectId},{$push: {likeUserIds: userId}});
+      try {
+        result = await this.project.findOneAndUpdate({_id: projectId}, {$inc: {likes: 1}}, {new: true});
+      } catch (err) {
+        try {
+          await this.user.findOneAndUpdate({_id: userId}, {$pull: {likeProjects: projectId}});
+        } catch (err) {
+          throw new HttpException(500,'db 오류 입니다.');
+        }
+      }
+      if (!result) {
+        try {
+          await this.user.findOneAndUpdate({_id: userId}, {$pull: {likeProjects: projectId}});
+        } catch (err) {
+          throw new HttpException(500,'db 오류 입니다.');
+        }
+      }
+    }
+    return result;
+  }
 
   public deleteProject = async (userId: string, id: string) => {
+    // @ts-ignore
     let project;
     try {
       project = await this.project.findOneAndDelete({_id: id});
@@ -85,6 +129,7 @@ export class ProjectService {
       throw new HttpException(500, 'db 오류 입니다.');
     }
     if(!project) throw new HttpException(404,'프로젝트를 찾을 수 없습니다.');
+
     try {
       project.commentIds.map(async (value) => {
         await this.commentService.deleteComment(value, 'project');
@@ -92,6 +137,16 @@ export class ProjectService {
     } catch (err) {
       throw new HttpException(500, 'db 오류 입니다.');
     }
+
+    try {
+      project.likeUserIds.map(async (userId) => {
+        // @ts-ignore
+        await this.user.findOneAndUpdate({_id: userId}, {$pull:{likeProjects: project._id}});
+      });
+    } catch (err) {
+      throw new HttpException(500, 'db 오류 입니다.');
+    }
+
     return project;
   }
 
