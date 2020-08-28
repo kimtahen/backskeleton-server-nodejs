@@ -23,12 +23,11 @@ class DetailedInformation {
 }
 export class CreateProjectDto {
   @IsString()
-  public userId: string;
   public title: string;
   public titleImage: string;
   public content: string;
 
-  @IsObject()
+  public userId: string;
   public additionalInfo: DetailedInformation;
 }
 

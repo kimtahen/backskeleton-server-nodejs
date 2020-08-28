@@ -22,8 +22,8 @@
 - [x] Comment 모델, API 구현
 - [x] Comment like 구현
 - [ ] Photo like 구현과, delete시 user의 likePhotos 의 photo.\_id 제거 기능
-- [ ] Project like 구현과, delete시 user의 likeProjects 의 project.\_id 제거 기능
-- [ ] Comment like 구현과, delete시 user의 likeComments 의 comment.\_id 제거 기능
+- [x] Project like 구현과, delete시 user의 likeProjects 의 project.\_id 제거 기능
+- [x] Comment like 구현과, delete시 user의 likeComments 의 comment.\_id 제거 기능
 - [ ] Photo user 인증 기능 추가
 - [x] Aws S3 api 구현
 

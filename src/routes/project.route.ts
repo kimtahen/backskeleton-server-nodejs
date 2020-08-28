@@ -21,6 +21,8 @@ export class ProjectRoute implements Route{
     this.router.get(`${this.path}/update/:projectId`, this.controller.updateProjectPage);
     this.router.post(`${this.path}/update/:projectId`,validation(CreateProjectDto), this.controller.updateProject);
 
+    this.router.get(`${this.path}/like/:projectId`, this.controller.likeProject);
+
     this.router.delete(`${this.path}/:projectId`, this.controller.deleteProject);
   }
 }

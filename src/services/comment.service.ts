@@ -70,8 +70,8 @@ export class CommentService {
   public likeComment = async (userId: string, commentId: string) => {
     let result;
     if (await this.user.findOne({_id: userId, likeComments: {$in: [commentId]}})) {
-
       await this.user.findOneAndUpdate({_id: userId}, {$pull: {likeComments: commentId}});
+      await this.comment.findOneAndUpdate({_id: commentId}, {$pull: {likeUserIds: userId}});
       try {
         result = await this.comment.findOneAndUpdate({_id: commentId}, {$inc: {likes: -1}}, {new: true});
       } catch (err) {
@@ -89,8 +89,8 @@ export class CommentService {
         }
       }
     } else {
-
       await this.user.findOneAndUpdate({_id: userId}, {$push: {likeComments: commentId}});
+      await this.comment.findOneAndUpdate({_id: commentId},{$push: {likeUserIds: userId}});
       try {
         result = await this.comment.findOneAndUpdate({_id: commentId}, {$inc: {likes: 1}}, {new: true});
       } catch (err) {
@@ -119,16 +119,20 @@ export class CommentService {
       throw new HttpException(500, 'db 오류 입니다.');
     }
     if(!comment) throw new HttpException(404, '댓글을 찾을 수 없습니다.');
+
     try {
-      await (async function deletion(Id: string, db: any) {
-        let arr = await db.findOneAndDelete({_id: Id});
+      await (async function deletion(Id: string, commentDB: any, userDB: any) {
+        let arr = await commentDB.findOneAndDelete({_id: Id});
+        arr.likeUserIds.map(async (userId: string) => {
+          await userDB.findOneAndUpdate({_id: userId}, {$pull:{likeComments: arr._id}});
+        });
         if (arr.commentIds.length === 0) {
           return;
         }
         arr.commentIds.map((value: string) => {
-          deletion(value, db);
+          deletion(value, commentDB, userDB);
         });
-      })(commentId, this.comment);
+      })(commentId, this.comment, this.user);
     } catch (err) {
       throw new HttpException(500, 'db 오류 입니다.');
     }

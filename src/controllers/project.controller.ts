@@ -133,6 +133,25 @@ export class ProjectController {
       return next(err);
     }
   }
+
+  public likeProject = async (req: Request, res: Response, next: NextFunction) => {
+    const projectId = req.params.projectId;
+    if (!req.user){
+      return next(new HttpException(401, '로그인 하세요!'));
+    }
+
+    // @ts-ignore
+    const userId = req.user._id;
+    let result;
+    try {
+      result = await this.service.likeProject(userId, projectId);
+      return res.status(200).json({data: result});
+    } catch (err){
+      next(err);
+    }
+
+  }
+
   public deleteProject = async (req: Request, res: Response, next: NextFunction) => {
     const projectId = req.params.projectId;
     if (!req.user){
