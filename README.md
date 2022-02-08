@@ -1,4 +1,12 @@
-## react-study-back
+## Introduction
+express와 typescript을 이용한 CRUD 서버입니다. '오늘의 집' 서비스를 참고하였습니다.
+
+api 구현 목록
+- authenticate (register, login, authenticate), 유저 기능
+- Post (Project, Photo) , 글 작성 기능
+- Comment (Project, Photo), 댓글 작성 기능
+- like (Project, Photo), 좋아요 등록 기능
+
 
 ## REFERENCE
 
