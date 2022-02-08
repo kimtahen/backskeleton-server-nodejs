@@ -6,6 +6,7 @@ api 구현 목록
 - Post (Project, Photo) , 글 작성 기능
 - Comment (Project, Photo), 댓글 작성 기능
 - like (Project, Photo), 좋아요 등록 기능
+- upload, AWS S3를 이용한 업로드 기능
 
 
 ## REFERENCE
