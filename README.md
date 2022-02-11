@@ -1,3 +1,4 @@
+2020.08
 ## Introduction
 express와 typescript을 이용한 CRUD 서버입니다. '오늘의 집' 서비스를 참고하였습니다.
 
